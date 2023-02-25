@@ -1,0 +1,13 @@
+﻿@page "/string"
+
+@if (!string.IsNullOrWhiteSpace(CurrentFilter))
+{
+    <p>Filter: @CurrentFilter</p>
+}
+
+@code
+{
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "filter")]
+    public string CurrentFilter { get; set; } = string.Empty;
+}

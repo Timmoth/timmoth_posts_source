@@ -1,0 +1,32 @@
+﻿@page "/array"
+@using System.Web
+
+<button @onclick="AddFilter">
+    Add Filter
+</button>
+
+<p>Page Filters:</p>
+@foreach (var filter in Filters)
+{
+    <p>@filter</p>
+}
+
+@code
+{
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string[] Filters { get; set; } = {};
+
+    private void AddFilter()
+    {
+        var uriBuilder = new UriBuilder(NavigationManager.Uri);
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        query.Add("filters", $"value{Filters.Length}");
+
+        uriBuilder.Query = query.ToString();
+        NavigationManager.NavigateTo(uriBuilder.ToString());
+    }
+}

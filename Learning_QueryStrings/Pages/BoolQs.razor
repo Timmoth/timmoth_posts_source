@@ -1,0 +1,30 @@
+﻿@page "/bool"
+
+<button @onclick="Toggle">
+    Toggle
+</button>
+
+<p>
+    @(IsPublic ? "public" : "private")
+</p>
+
+@code
+{
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public bool IsPublic { get; set; }
+
+    private void Toggle()
+    {
+        var updatedUri = NavigationManager.GetUriWithQueryParameters(
+            new Dictionary<string, object?>
+            {
+                ["ispublic"] = (!IsPublic)
+            });
+
+        NavigationManager.NavigateTo(updatedUri);
+    }
+}
